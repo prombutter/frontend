@@ -1,0 +1,57 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css");
+
+/* ── Design tokens (Figma variables) ─────────────────────────────── */
+:root {
+  --navy-900: #1a1b2f;
+  --navy-700: #323448;
+  --navy-600: #41424e;
+
+  --neutral-white: #ffffff;
+  --neutral-50: #f5f4f0;
+  --neutral-100: #ece2cd;
+  --neutral-200: #dcdbd7;
+  --neutral-300: #d9d9d9;
+  --neutral-400: #999999;
+  --neutral-450: #808080;
+  --neutral-500: #777672;
+  --neutral-600: #666666;
+  --neutral-700: #444444;
+  --neutral-900: #202020;
+
+  --amber-100: #f7e5b7;
+  --amber-200: #f5dfa5;
+  --amber-300: #e8d5a0;
+  --amber-400: #f4c046;
+  --amber-500: #f19e54;
+  --amber-700: #b7770d;
+
+  --tag-blue-bg: rgba(91, 155, 213, 0.12);
+  --tag-blue-fg: #2471b3;
+  --tag-orange-bg: rgba(179, 88, 36, 0.12);
+  --tag-orange-fg: #b35824;
+
+  --red-500: #dc1c1c;
+  --red-600: #b32424;
+  --red-bg: rgba(220, 28, 28, 0.08);
+
+  --border-card: rgba(119, 118, 114, 0.3);
+  --border-button-secondary: rgba(153, 153, 153, 0.5);
+
+  --font-display: "MonaS12", "DungGeunMo", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-body:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  --radius-card: 12px;
+  --radius-btn: 8px;
+
+  --lnb-width: 324px;
+}
+
+/* MonaS12 is a licensed font that ships with the Figma file — if it is
+   installed locally it is used, otherwise the monospace stack takes over. */
+@font-face {
+  font-family: "MonaS12";
+  src: local("MonaS12"), local("Mona S12");
+  font-weight: 400 700;
+  font-display: swap;
+}

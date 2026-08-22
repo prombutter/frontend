@@ -1,0 +1,9 @@
+/*
+ * 전역 스타일 진입점. 실제 규칙은 styles/ 아래에 나뉘어 있다.
+ *  - tokens.css     Figma 변수를 옮긴 색·타이포·간격 토큰과 폰트 정의
+ *  - base.css       리셋과 타이포 스케일 유틸(.t-h1 …)
+ *  - components.css 화면 컴포넌트 클래스
+ */
+@import "../styles/tokens.css";
+@import "../styles/base.css";
+@import "../styles/components.css";

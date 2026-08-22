@@ -1,0 +1,7 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="278.11" height="277.849" viewBox="0 0 278.11 277.849" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="donut">
+<path id="donut_segment_1" d="M234.566 43.3831C275.921 84.7387 285.944 148.02 259.392 200.131C232.84 252.242 175.753 281.33 117.988 272.18" stroke="#F19E54" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 20.21"/>
+<path id="donut_segment_2" d="M117.871 272.18C70.234 264.635 30.2407 232.25 12.9563 187.222C-4.32806 142.195 3.72232 91.3667 34.075 53.8843" stroke="#F4C046" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 20.75"/>
+<path id="donut_segment_3" d="M34.0734 53.8845C58.1513 24.1508 93.715 6.03017 131.923 4.02779C170.13 2.0254 207.393 16.3293 234.447 43.3834" stroke="#F7E5B7" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 19.56"/>
+</g>
+</svg>
