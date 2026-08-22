@@ -1,9 +1,67 @@
 /*
- * 전역 스타일 진입점. 실제 규칙은 styles/ 아래에 나뉘어 있다.
- *  - tokens.css     Figma 변수를 옮긴 색·타이포·간격 토큰과 폰트 정의
- *  - base.css       리셋과 타이포 스케일 유틸(.t-h1 …)
- *  - components.css 화면 컴포넌트 클래스
+ * 전역 스타일 진입점.
+ *
+ * Tailwind는 theme·utilities 레이어만 들여온다. preflight(리셋)는 제외했는데,
+ * styles/base.css가 이미 리셋을 갖고 있어 두 번 적용하면 기존 화면이 틀어지기 때문이다.
+ *
+ * 기존 전역 CSS(styles/*.css)는 PB-43 이전에 만든 화면들이 쓰고 있어 그대로 둔다.
+ * 새로 만드는 공통 컴포넌트는 Tailwind 유틸리티만 쓰고, 화면을 하나씩 옮기면서
+ * styles/components.css를 줄여 나간다.
  */
+@layer theme, base, components, utilities;
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css");
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
 @import "../styles/tokens.css";
-@import "../styles/base.css";
-@import "../styles/components.css";
+@import "../styles/base.css" layer(base);
+@import "../styles/components.css" layer(components);
+
+/*
+ * Figma 변수를 Tailwind 테마에 연결한다. 값의 출처는 styles/tokens.css 하나이므로
+ * 색을 바꿀 때는 그쪽만 고치면 유틸리티(bg-navy-900 …)까지 함께 따라온다.
+ */
+@theme inline {
+  --color-navy-900: var(--navy-900);
+  --color-navy-700: var(--navy-700);
+  --color-navy-600: var(--navy-600);
+
+  --color-white: var(--neutral-white);
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-150: #e9e8e4;
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-450: var(--neutral-450);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-900: var(--neutral-900);
+
+  --color-amber-100: var(--amber-100);
+  --color-amber-200: var(--amber-200);
+  --color-amber-300: var(--amber-300);
+  --color-amber-400: var(--amber-400);
+  --color-amber-500: var(--amber-500);
+  --color-amber-600: #d59114;
+  --color-amber-700: var(--amber-700);
+
+  --color-red-500: var(--red-500);
+  --color-red-600: var(--red-600);
+  --color-red-bg: var(--red-bg);
+
+  --color-green-600: #267337;
+
+  --color-tag-blue-bg: var(--tag-blue-bg);
+  --color-tag-blue-fg: var(--tag-blue-fg);
+  --color-tag-orange-bg: var(--tag-orange-bg);
+  --color-tag-orange-fg: var(--tag-orange-fg);
+
+  --color-border-card: var(--border-card);
+  --color-border-button: var(--border-button-secondary);
+
+  --font-body: var(--font-body);
+  --font-display: var(--font-display);
+}

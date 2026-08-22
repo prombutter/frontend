@@ -3,6 +3,10 @@ import Link from "next/link";
 /** 만들어둔 화면을 한눈에 보는 인덱스. Figma 섹션 단위로 묶었다. */
 const GROUPS = [
   {
+    title: "디자인 시스템",
+    items: [["/design-system", "공통 컴포넌트 카탈로그 (PB-43)"]],
+  },
+  {
     title: "메인 플로우",
     items: [
       ["/onboarding", "온보딩 3단계"],

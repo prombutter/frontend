@@ -44,13 +44,23 @@ import는 `@/components/ui`, `@/lib/mock-data`처럼 `@/` 별칭을 쓴다.
 
 ## 규칙
 
-**디자인 토큰** — 색·타이포는 반드시 `styles/tokens.css`의 `:root` 변수를 쓴다.
+**디자인 토큰** — 값의 출처는 `styles/tokens.css` 하나다. `app/globals.css`의 `@theme inline`이
+그 변수를 Tailwind에 연결하므로, 토큰만 고치면 `bg-navy-900` 같은 유틸리티까지 함께 따라온다.
+Tailwind 임의 값(`bg-[#1a1b2f]`)으로 색을 새로 박지 않는다.
 Figma 변수명과 1:1로 맞춰 두었으므로(`navy/900` → `--navy-900`) 하드코딩한 hex를
 새로 추가하지 않는다. 값이 바뀌면 변수 정의만 고친다.
 
-**스타일링** — Tailwind를 쓰지 않는다. 전역 클래스(`.card`, `.part-card`, `.btn--primary` …)
-기반이고, 새 화면도 기존 클래스를 먼저 찾아 재사용한다. 화면 전용 스타일이 꼭 필요하면
-CSS Module로 분리한다.
+**스타일링 — 지금은 두 층이 공존한다 (이행 중)**
+
+- **새로 쓰는 코드는 `components/ds`의 공통 컴포넌트 + Tailwind 유틸리티만 쓴다.**
+  Button · TextField · Card · Chip · Toast · Modal · Spinner가 여기 있다.
+  카탈로그는 `/design-system`에서 볼 수 있다.
+- `styles/components.css`의 전역 클래스(`.card`, `.part-card`, `.btn--primary` …)는
+  PB-43 이전에 만든 화면들이 쓰고 있는 **레거시**다. 새 화면에서 쓰지 않는다.
+  화면을 하나씩 ds 컴포넌트로 옮기면서 이 파일을 줄여 나간다.
+- `components/ui`도 같은 이유로 레거시다. `components/ds`가 대체한다.
+- Tailwind는 preflight(리셋)를 뺀 채 theme·utilities 레이어만 들여온다.
+  `styles/base.css`가 이미 리셋을 갖고 있어 두 번 적용하면 기존 화면이 틀어지기 때문이다.
 
 **서버/클라이언트 경계** — `"use client"`는 상호작용이 있는 컴포넌트에만 붙인다.
 페이지는 서버 컴포넌트로 두고 인터랙션 조각만 클라이언트로 내린다.

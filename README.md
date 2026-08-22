@@ -36,6 +36,7 @@ npm run build
 ## 구조
 
 - `app/` — 라우트. `(workspace)/layout.tsx`가 LNB + 콘텐츠 패널 공용 셸
+- `components/ds` — **공통 컴포넌트 (PB-43)**. Button, TextField, Card, Chip, Toast, Modal, Spinner
 - `components/layout` — LNB, 상단 배너
 - `components/auth` — 로그인·회원가입 공통 카드
 - `components/onboarding` — 온보딩 일러스트(Figma 도형을 좌표로 옮긴 스켈레톤)
