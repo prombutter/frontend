@@ -8,10 +8,8 @@ export function BasicCard({ fixed = false }: { fixed?: boolean }) {
       <p className="card__title">{CARD_TITLE}</p>
       <div className="card__info">
         <div className="badges">
-          {SHORT_TAGS.map((tone, i) => (
-            <Tag key={i} tone={tone}>
-              #Coding
-            </Tag>
+          {SHORT_TAGS.map((_, i) => (
+            <Tag key={i} tag="Coding" />
           ))}
         </div>
         <p className="card__meta">8 weeks ago</p>

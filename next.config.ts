@@ -9,12 +9,19 @@ const isStaticExport = process.env.STATIC_EXPORT === "1";
 const nextConfig: NextConfig = {
   ...(isStaticExport ? { output: "export" as const } : {}),
   images: {
-    // 아이콘·로고가 전부 저장소에 커밋된 자체 SVG라 최적화를 허용한다.
-    // 외부 원본을 받지 않으므로 SVG 스크립트 실행 위험은 없다.
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     unoptimized: isStaticExport,
+  },
+  async rewrites() {
+    if (isStaticExport) return [];
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://localhost:8000/api/:path*",
+      },
+    ];
   },
 };
 
