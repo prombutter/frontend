@@ -1,3 +1,5 @@
+"use client";
+
 import type { TagTone } from "@/types";
 
 function getTone(text: string): TagTone {
