@@ -11,7 +11,7 @@ export default function DashboardPage() {
       <PageHeader title="Dashboard" desc="Your prompt workspace" />
       <ExtensionBanner />
 
-      <div className="main">
+      <div className="main main--fit">
         <section className="section">
           <div className="section__header">
             <h2 className="t-h2 section__title">Quick Start</h2>
