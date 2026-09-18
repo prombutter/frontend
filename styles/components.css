@@ -2449,8 +2449,24 @@
  * 다른 화면(.main--fit 없음)은 기존 스크롤 동작을 그대로 쓴다.
  * ────────────────────────────────────────────────────────────────── */
 .content:has(.main--fit) {
+  /* 제목·서브텍스트·얼럿·본문이 모두 이 값 하나를 좌우 여백으로 쓴다.
+     %는 콘텐츠 패널 폭 기준이라 1920에서 1596×7.77% = 124px로 시안과 같고,
+     화면이 좁아지면 같은 비율로 함께 줄어든다. */
+  --page-inset: clamp(24px, 7.77%, 124px);
+
   height: calc(100vh - 16px);
   overflow: hidden;
+}
+
+/* 세 요소의 좌우 끝을 한 줄로 맞춘다 */
+.content:has(.main--fit) .page-header,
+.content:has(.main--fit) .banner-wrap,
+.main--fit {
+  padding-inline: var(--page-inset);
+}
+/* 얼럿은 고정 1348px 대신 본문과 같은 폭으로 늘어난다 */
+.content:has(.main--fit) .banner {
+  width: 100%;
 }
 
 /* 세로 여백은 화면이 낮아지면 같이 줄어든다 */
@@ -2466,7 +2482,7 @@
   flex: 1 1 auto;
   min-height: 0;
   gap: clamp(20px, 3.5vh, 60px);
-  padding: 0 clamp(24px, 4vw, 124px) clamp(16px, 3vh, 60px);
+  padding-bottom: clamp(16px, 3vh, 60px);
 }
 
 /* Quick Start — 4장이 가로를 균등하게 채운다 */
