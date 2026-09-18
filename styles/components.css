@@ -2468,6 +2468,10 @@
 .content:has(.main--fit) .banner {
   width: 100%;
 }
+/* 구분선도 같은 끝선에 맞춘다 (시안은 full-bleed였다) */
+.content:has(.main--fit) .divider {
+  margin-inline: var(--page-inset);
+}
 
 /* 세로 여백은 화면이 낮아지면 같이 줄어든다 */
 .content:has(.main--fit) .page-header {
