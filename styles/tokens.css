@@ -45,6 +45,11 @@
   --radius-btn: 8px;
 
   --lnb-width: 324px;
+  /* 콘텐츠 패널이 위에서 띄워지는 양 */
+  --content-offset: 16px;
+  /* LNB 로고 블록 아래 구분선의 Y 좌표 = 패딩 40 + 로고 31 + 패딩 40.
+     콘텐츠 헤더의 구분선도 이 높이에 맞춘다. */
+  --lnb-line-y: 111px;
 }
 
 /* MonaS12 is a licensed font that ships with the Figma file — if it is

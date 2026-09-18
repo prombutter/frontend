@@ -141,7 +141,9 @@
   display: flex;
   align-items: center;
   gap: 30px;
-  padding: 24px 124px;
+  /* 아래 구분선이 LNB 로고 밑줄과 같은 높이에 오도록 고정한다 */
+  height: calc(var(--lnb-line-y) - var(--content-offset));
+  padding: 0 124px;
 }
 .page-header__title {
   color: var(--neutral-900);
@@ -2474,10 +2476,6 @@
 }
 
 /* 세로 여백은 화면이 낮아지면 같이 줄어든다 */
-.content:has(.main--fit) .page-header {
-  padding-top: clamp(12px, 2vh, 24px);
-  padding-bottom: clamp(12px, 2vh, 24px);
-}
 .content:has(.main--fit) .banner-wrap {
   padding-block: clamp(12px, 2vh, 20px) clamp(16px, 3vh, 40px);
 }
