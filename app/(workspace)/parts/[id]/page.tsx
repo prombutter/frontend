@@ -2,19 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, use } from "react";
 import { PageHeader } from "@/components/ui";
 import { usePartEditor } from "@/hooks/usePartEditor";
 
-export default function NewPartPage() {
+export default function EditPartPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  
   const {
     title, setTitle,
     body, setBody,
     tags, setTags,
     variables,
+    isLoading,
     isSubmitting,
     save
-  } = usePartEditor();
+  } = usePartEditor(id);
 
   const [tagInput, setTagInput] = useState("");
 
@@ -39,9 +42,13 @@ export default function NewPartPage() {
     setTags(tags.filter(tag => tag !== t));
   };
 
+  if (isLoading) {
+    return <div style={{ padding: 40, textAlign: "center" }}>Loading...</div>;
+  }
+
   return (
     <>
-      <PageHeader title="New Parts" desc="새로운 파츠를 생성합니다." />
+      <PageHeader title="Edit Parts" desc="기존 파츠를 수정합니다." />
 
       <div className="editor-body">
         <div className="editor-inner">
