@@ -1,12 +1,12 @@
 export interface ApiErrorResponse {
   error_code: string;
   message: string;
-  detail?: any;
+  detail?: unknown;
 }
 
 export class ApiError extends Error {
   error_code: string;
-  detail?: any;
+  detail?: unknown;
 
   constructor(response: ApiErrorResponse) {
     super(response.message);

@@ -1,4 +1,4 @@
-# Prombutter FE
+﻿# Prombutter FE
 
 Figma 「프롬버터」 디자인을 옮긴 프론트엔드입니다. Next.js(App Router) + TypeScript.
 
@@ -55,3 +55,14 @@ npm run build
 
 - Figma: https://www.figma.com/design/CMxbScTqJOOYcrteLkuCXW/프롬버터
 - Jira: https://prombutter.atlassian.net/browse/PB-41
+## 운영 API 연결
+
+프론트와 기존 Python API는 각각 Vercel에 배포하고 DB·OAuth 인증은 Supabase를 사용한다.
+
+Vercel 프론트 프로젝트의 NEXT_PUBLIC_API_BASE_URL에는 배포된 Python API의 HTTPS 오리진을 등록한다. 경로·쿼리·사용자 인증정보가 없는 API 주소여야 한다. 운영 빌드는 이 값이 없거나 유효하지 않으면 중단한다. 로컬 개발에서는 /api 프록시가 localhost:8000으로 연결된다.
+
+API 요청에는 쿠키가 포함된다. API 프로젝트는 프론트 오리진을 CORS에 허용하고 운영 쿠키를 Secure=true, SameSite=none으로 설정한다. API를 먼저 배포한 뒤 실제 API 주소로 프론트를 빌드한다.
+
+현재 로그인 화면은 실제 인증 호출이 없고 파츠 API는 임시 workspace ID를 사용한다. 이 연결 작업은 별도 미완료 항목이며 빌드 성공을 로그인·데이터 연동 완료로 보고하지 않는다.
+
+변경 후 lint, build, typecheck를 확인한다. build와 typecheck는 순서대로 실행한다.

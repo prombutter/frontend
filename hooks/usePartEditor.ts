@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Part, ApiError, PartCreateInput, PartUpdateInput } from "@/types/api";
+import { ApiError, PartCreateInput, PartUpdateInput } from "@/types/api";
 import * as partsApi from "@/lib/api/parts";
 
 // 백엔드 정규식과 동일한 기준: 중괄호/개행 불허, 양옆 공백 허용
@@ -25,27 +25,34 @@ export function usePartEditor(partId?: string) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  
+
   // Derived / UI State
-  const [variables, setVariables] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(!!partId);
+  const variables = useMemo(() => extractVariables(body), [body]);
+  const [loadedPartId, setLoadedPartId] = useState<string | undefined>();
+  const [previousPartId, setPreviousPartId] = useState(partId);
+  const isLoading = Boolean(partId && loadedPartId !== partId);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
+
+  if (previousPartId !== partId) {
+    setPreviousPartId(partId);
+    setLoadedPartId(undefined);
+    setError(null);
+  }
 
   // Load existing part if partId is provided
   useEffect(() => {
     if (!partId) return;
 
     let isMounted = true;
-    setIsLoading(true);
 
-    partsApi.getPart(partId)
+    partsApi
+      .getPart(partId)
       .then((part) => {
         if (isMounted) {
           setTitle(part.title);
           setBody(part.body);
           setTags(part.tags || []);
-          setVariables(extractVariables(part.body));
         }
       })
       .catch((err) => {
@@ -55,7 +62,7 @@ export function usePartEditor(partId?: string) {
         }
       })
       .finally(() => {
-        if (isMounted) setIsLoading(false);
+        if (isMounted) setLoadedPartId(partId);
       });
 
     return () => {
@@ -63,13 +70,8 @@ export function usePartEditor(partId?: string) {
     };
   }, [partId]);
 
-  // Real-time variable extraction when body changes
-  useEffect(() => {
-    setVariables(extractVariables(body));
-  }, [body]);
-
   // 글자수 등 프론트엔드 사전 검증
-  const validate = (): boolean => {
+  const validate = useCallback((): boolean => {
     if (title.length > 100) {
       alert("제목은 100자를 초과할 수 없습니다.");
       return false;
@@ -89,7 +91,7 @@ export function usePartEditor(partId?: string) {
       }
     }
     return true;
-  };
+  }, [title, body, tags]);
 
   const save = useCallback(async () => {
     if (!validate()) return;
@@ -109,7 +111,7 @@ export function usePartEditor(partId?: string) {
         const payload: PartCreateInput = { title, body, tags };
         await partsApi.createPart(payload);
       }
-      
+
       // 저장 성공 후 파츠 목록으로 이동
       router.push("/parts");
     } catch (err) {
@@ -120,7 +122,7 @@ export function usePartEditor(partId?: string) {
     } finally {
       setIsSubmitting(false);
     }
-  }, [partId, title, body, tags, router]);
+  }, [partId, title, body, tags, router, validate]);
 
   // ⌘S / Ctrl+S 저장 단축키 지원
   useEffect(() => {

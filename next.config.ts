@@ -5,6 +5,20 @@ import type { NextConfig } from "next";
  * 시안을 서버 없이 열어보기 위한 용도라 이미지 최적화는 끈다.
  */
 const isStaticExport = process.env.STATIC_EXPORT === "1";
+const apiOrigin = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+if (!isStaticExport && process.env.NODE_ENV === "production") {
+  let validApiOrigin = false;
+  try {
+    const url = new URL(apiOrigin ?? "");
+    validApiOrigin = url.protocol === "https:" && apiOrigin?.replace(/\/$/, "") === url.origin;
+  } catch {
+    validApiOrigin = false;
+  }
+  if (!validApiOrigin) {
+    throw new Error("NEXT_PUBLIC_API_BASE_URL must be an HTTPS API origin for production.");
+  }
+}
 
 const nextConfig: NextConfig = {
   ...(isStaticExport ? { output: "export" as const } : {}),
@@ -15,11 +29,11 @@ const nextConfig: NextConfig = {
     unoptimized: isStaticExport,
   },
   async rewrites() {
-    if (isStaticExport) return [];
+    if (isStaticExport || process.env.NODE_ENV === "production") return [];
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:8000/api/:path*",
+        destination: `${apiOrigin?.replace(/\/$/, "") ?? "http://localhost:8000"}/api/:path*`,
       },
     ];
   },
