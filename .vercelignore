@@ -1,0 +1,11 @@
+.git/
+.vercel/
+.next/
+node_modules/
+.env*
+*.pem
+*.key
+.tmp/
+.claude/
+AGENTS*.md
+CLAUDE*.md

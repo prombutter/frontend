@@ -1,0 +1,24 @@
+name: Frontend CI
+on:
+  push:
+    branches: [dev, main, fix/deployment-lint-gates]
+  pull_request:
+    branches: [dev, main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_BASE_URL: https://backend-prombutter-s-projects.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run typecheck
