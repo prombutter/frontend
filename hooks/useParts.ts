@@ -5,7 +5,15 @@ import * as partsApi from "@/lib/api/parts";
 export function useParts(isDeleted: boolean = false) {
   const [parts, setParts] = useState<Part[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadedIsDeleted, setLoadedIsDeleted] = useState<boolean>();
+  const [previousIsDeleted, setPreviousIsDeleted] = useState(isDeleted);
   const [error, setError] = useState<ApiError | null>(null);
+
+  if (previousIsDeleted !== isDeleted) {
+    setPreviousIsDeleted(isDeleted);
+    setIsLoading(true);
+    setError(null);
+  }
 
   const fetchParts = useCallback(async () => {
     setIsLoading(true);
@@ -22,15 +30,36 @@ export function useParts(isDeleted: boolean = false) {
   }, [isDeleted]);
 
   useEffect(() => {
-    fetchParts();
-  }, [fetchParts]);
+    let isMounted = true;
+    partsApi
+      .getParts(undefined, isDeleted)
+      .then((data) => {
+        if (isMounted) {
+          setParts(data);
+          setError(null);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setError(err as ApiError);
+          alert((err as ApiError).message);
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoadedIsDeleted(isDeleted);
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [isDeleted]);
 
   const toggleFavorite = async (id: string) => {
     try {
       const updatedPart = await partsApi.toggleFavoritePart(id);
-      setParts((prev) =>
-        prev.map((p) => (p.id === id ? updatedPart : p))
-      );
+      setParts((prev) => prev.map((p) => (p.id === id ? updatedPart : p)));
     } catch (err) {
       alert((err as ApiError).message);
     }
@@ -62,7 +91,7 @@ export function useParts(isDeleted: boolean = false) {
       alert((err as ApiError).message);
     }
   };
-  
+
   const duplicate = async (id: string) => {
     try {
       const newPart = await partsApi.duplicatePart(id);
@@ -74,7 +103,7 @@ export function useParts(isDeleted: boolean = false) {
 
   return {
     parts,
-    isLoading,
+    isLoading: isLoading || loadedIsDeleted !== isDeleted,
     error,
     refetch: fetchParts,
     toggleFavorite,

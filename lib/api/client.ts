@@ -1,19 +1,16 @@
 import { ApiError, ApiErrorResponse } from "@/types/api";
 
-const API_BASE_URL = "/api/v1";
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? ""}/api/v1`;
 
 // 임시 워크스페이스 ID (인증 구현 전까지 하드코딩 사용)
 // TODO: PB-106(인증) 완료 시 삭제하고 실제 Context/Auth 에서 가져오도록 수정
 export const TEMP_WORKSPACE_ID = "00000000-0000-0000-0000-000000000000";
 
 interface FetchOptions extends RequestInit {
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
 }
 
-export async function fetchApi<T>(
-  endpoint: string,
-  options: FetchOptions = {}
-): Promise<T> {
+export async function fetchApi<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
   const { params, headers, ...customConfig } = options;
 
   let url = `${API_BASE_URL}${endpoint}`;
@@ -31,6 +28,7 @@ export async function fetchApi<T>(
   }
 
   const config: RequestInit = {
+    credentials: "include",
     ...customConfig,
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +42,7 @@ export async function fetchApi<T>(
     let errorData: ApiErrorResponse;
     try {
       errorData = await response.json();
-    } catch (e) {
+    } catch {
       errorData = {
         error_code: "ERR-UNKNOWN",
         message: "네트워크 에러가 발생했습니다.",
